@@ -1,6 +1,10 @@
 import database from "../infra/database";
 import password from "../models/password";
-import { NotFoundError, ValidationError } from "../infra/errors";
+import {
+  NotFoundError,
+  ValidationError,
+  UnauthorizedError,
+} from "../infra/errors";
 
 async function findOneByUsername(username) {
   const userFound = await runSelecQuery(username);
@@ -32,8 +36,36 @@ async function findOneByUsername(username) {
   }
 }
 
+async function findOneByEmail(email) {
+  const userFound = await runSelecQuery(email);
+  return userFound;
+
+  async function runSelecQuery(email) {
+    const results = await database.query({
+      text: `
+      SELECT
+          *
+        FROM 
+          usuarios
+        WHERE
+          LOWER(email) = LOWER($1)
+        LIMIT
+          1
+          ;`,
+      values: [email],
+    });
+
+    if (results.rowCount === 0) {
+      throw new UnauthorizedError({
+        message: "Dados de autenticação não conferem.",
+        action: "Verifique se os dados enviados estão corretos",
+      });
+    }
+
+    return results.rows[0];
+  }
+}
 async function validateUniqueUsername(username) {
-  console.log(username);
   const results = await database.query({
     text: `
         SELECT
@@ -110,6 +142,7 @@ async function create(userInputValues) {
 const user = {
   create,
   findOneByUsername,
+  findOneByEmail,
 };
 
 export default user;
