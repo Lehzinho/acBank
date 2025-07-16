@@ -4,7 +4,6 @@ import migrator from "../../../../../models/migrator";
 export async function GET(request) {
   try {
     const pendingMigrations = await migrator.listPendingMigrations();
-    console.log("chegou aqui");
 
     return Response.json(pendingMigrations, { status: 200 });
   } catch (error) {

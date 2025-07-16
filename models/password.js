@@ -1,7 +1,6 @@
 import bcryptjs from "bcryptjs";
 
 async function hash(password) {
-  console.log(password);
   const rounds = getNumberOfRounds();
   return await bcryptjs.hash(password, rounds);
 }
