@@ -32,6 +32,28 @@ async function findOneByUsername(username) {
   }
 }
 
+async function validateUniqueUsername(username) {
+  console.log(username);
+  const results = await database.query({
+    text: `
+        SELECT
+          nome
+        FROM 
+          usuarios
+        WHERE
+          LOWER(nome) = LOWER($1)
+      ;`,
+    values: [username],
+  });
+
+  if (results.rowCount > 0) {
+    throw new ValidationError({
+      message: "O usuário informado já está send utilizado",
+      action: "Utilize outro nome de usuário para realizar esta operação.",
+    });
+  }
+}
+
 async function validateUniqueEmail(email) {
   const results = await database.query({
     text: `
@@ -55,6 +77,7 @@ async function validateUniqueEmail(email) {
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.nome);
   await hashPasswordInObject(userInputValues);
   const newUser = await runInsertQuery(userInputValues);
   return newUser;
