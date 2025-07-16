@@ -36,6 +36,9 @@ describe("POST /api/v1/users", () => {
         body: JSON.stringify(userData),
       });
 
+      // Verifica status HTTP de sucesso
+      expect(response.status).toBe(201);
+
       const responseBody = await response.json();
 
       // Verifica estrutura da resposta
@@ -48,9 +51,6 @@ describe("POST /api/v1/users", () => {
         created_at: responseBody.created_at,
         updated_at: responseBody.updated_at,
       });
-
-      // Verifica status HTTP de sucesso
-      expect(response.status).toBe(201);
 
       // Verifica se ID é UUID v4 válido
       expect(uuidVersion(responseBody.id)).toBe(4);
