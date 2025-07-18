@@ -15,5 +15,5 @@
 
 .Container > label {
   font: var(--fontnormal);
-  color: var(--mainRedColor);
+  color: var(--mainBackColor);
 }

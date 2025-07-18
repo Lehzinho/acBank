@@ -7,8 +7,9 @@
   all: unset;
   width: 100%;
   text-align: center;
-  background-color: aqua;
-  height: 28px;
+  background-color: var(--mainBlueColor);
+  color: var(--mainWhiteColor);
+  height: 32px;
   border-radius: 8px;
 
   margin-bottom: 12px;

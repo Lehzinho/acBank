@@ -48,12 +48,15 @@ export const TransactionMenu = () => {
   return (
     <section className={styles.Container}>
       <div>
-        <button onClick={() => setTipoTransacao("DEPOSITO")}>Deposito</button>
+        <button onClick={() => setTipoTransacao("DEPOSITO")}>Depósito</button>
         <button onClick={() => setTipoTransacao("TRANSFERENCIA")}>
-          Transferencia
+          Transferência
         </button>
       </div>
-      <h3>Tipo da transação: {tipoTransacao}</h3>
+      <h3>
+        Tipo da transação:{" "}
+        {tipoTransacao === "DEPOSITO" ? "Depósito" : "Transferência"}
+      </h3>
       <div>
         <label htmlFor="valor">
           Valor:
@@ -83,7 +86,7 @@ export const TransactionMenu = () => {
               type="email"
               value={destinatario}
               onChange={(e) => setDestinatario(e.target.value)}
-              placeholder="Digite o email do destinatario"
+              placeholder="Digite o e-mail do destinatário"
             />
           </label>
         </>

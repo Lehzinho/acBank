@@ -85,15 +85,15 @@ export const SignUpForm = () => {
       {/* Campo de Nome */}
       <Input
         label="Nome:"
-        placeholder="Entre seu Nome"
+        placeholder="Digite seu nome"
         name="nome"
         type="nome"
         register={register}
         error={errors.nome?.message}
       />
       <Input
-        label="Email:"
-        placeholder="Entre seu Email"
+        label="	E-mail::"
+        placeholder="Digite seu e-mail"
         name="email"
         type="email"
         register={register}
@@ -109,7 +109,7 @@ export const SignUpForm = () => {
       />
       <Input
         type="password"
-        label="Confirme a Senha:"
+        label="Confirmar senha:"
         placeholder="Confirme a senha"
         name="confirmPassword"
         register={register}
@@ -119,7 +119,7 @@ export const SignUpForm = () => {
         {isSubmitting ? "Carregando..." : "Registrar"}
       </button>
       <Link href="/signin">
-        Já possue uma conta faça o <span>Login</span>
+        Já possui uma conta? Faça o <span>login</span>
       </Link>
     </form>
   );

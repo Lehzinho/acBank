@@ -45,7 +45,7 @@ export const TableRole = (trans: TransacaoProps) => {
     <>
       <tr className={styles.TableRole}>
         <td>{new Date(trans.created_at).toLocaleDateString("pt-BR")}</td>
-        <td>{transaction.tipo === "DEPOSITO" ? "Credito" : "Debito"} </td>
+        <td>{transaction.tipo === "DEPOSITO" ? "Crédito" : "Débito"} </td>
         <td
           style={{ textAlign: "right" }}
           className={

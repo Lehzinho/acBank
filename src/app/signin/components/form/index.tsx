@@ -71,8 +71,8 @@ export const SignInForm = () => {
   return (
     <form className={style.form} onSubmit={handleSubmit(handleLogin)}>
       <Input
-        label="Email:"
-        placeholder="Entre seu Email"
+        label="E-mail:"
+        placeholder="Digite seu e-mail"
         name="email"
         type="email"
         register={register}
@@ -90,7 +90,7 @@ export const SignInForm = () => {
         {isSubmitting ? "Carregando..." : "Entrar"}
       </button>
       <Link href="/signup">
-        Não possue conta <span>Cadastre-se</span>
+        Não possui conta? <span>Cadastre-se</span>
       </Link>
     </form>
   );
