@@ -1,7 +1,44 @@
 import database from "../infra/database.js";
 import crypto from "node:crypto";
+import * as cookie from "cookie";
+import { UnauthorizedError } from "../infra/errors.js";
 
 const EXPIRATION_IN_MILLISECONDS = 60 * 60 * 2 * 1000; // 2 HORAS
+
+async function authenticate(cookieHeader) {
+  try {
+    if (!cookieHeader) {
+      throw new UnauthorizedError({
+        message: "Sessão não encontrada.",
+        action: "Faça login para acessar este recurso.",
+      });
+    }
+
+    // Parse dos cookies
+    const cookies = cookie.parse(cookieHeader);
+    const sessionToken = cookies.session_id;
+
+    if (!sessionToken) {
+      throw new UnauthorizedError({
+        message: "Token de sessão não encontrado.",
+        action: "Faça login para acessar este recurso",
+      });
+    }
+
+    // Verifica se a sessão é válida
+    const sessionData = await verify(sessionToken);
+
+    if (!sessionData) {
+      throw new UnauthorizedError({
+        message: "Sessão inválida ou expirada.",
+        action: "Faça login novamente",
+      });
+    }
+    return sessionData;
+  } catch (error) {
+    throw new UnauthorizedError(error, { status_code: error.status_code });
+  }
+}
 
 async function create(userId) {
   const token = crypto.randomBytes(48).toString("hex");
@@ -63,6 +100,7 @@ async function verify(token) {
 const session = {
   create,
   verify,
+  authenticate,
   EXPIRATION_IN_MILLISECONDS,
 };
 

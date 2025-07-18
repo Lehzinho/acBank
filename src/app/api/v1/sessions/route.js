@@ -21,6 +21,7 @@ export async function POST(request) {
       sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Importante para desenvolvimento
       domain: process.env.NODE_ENV === "production" ? undefined : "localhost",
     });
+
     return Response.json(newSession, {
       status: 201,
       headers: {
@@ -49,33 +50,7 @@ export async function GET(request) {
     // Extrai o cookie da requisição
     const cookieHeader = request.headers.get("cookie");
 
-    if (!cookieHeader) {
-      throw new UnauthorizedError({
-        message: "Sessão não encontrada.",
-        action: "Faça login para acessar este recurso",
-      });
-    }
-
-    // Parse dos cookies
-    const cookies = cookie.parse(cookieHeader);
-    const sessionToken = cookies.session_id;
-
-    if (!sessionToken) {
-      throw new UnauthorizedError({
-        message: "Token de sessão não encontrado.",
-        action: "Faça login para acessar este recurso",
-      });
-    }
-
-    // Verifica se a sessão é válida
-    const sessionData = await session.verify(sessionToken);
-
-    if (!sessionData) {
-      throw new UnauthorizedError({
-        message: "Sessão inválida ou expirada.",
-        action: "Faça login novamente",
-      });
-    }
+    const sessionData = await session.authenticate(cookieHeader);
 
     // Retorna os dados da sessão válida
     return Response.json(
