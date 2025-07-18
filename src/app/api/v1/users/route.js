@@ -1,5 +1,4 @@
 import user from "../../../../../models/users";
-import { NotFoundError, ValidationError } from "../../../../../infra/errors";
 
 export async function POST(request) {
   const body = await request.json();

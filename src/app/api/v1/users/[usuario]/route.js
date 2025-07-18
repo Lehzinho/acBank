@@ -1,9 +1,11 @@
-import user from "../../../../../../models/users";
+import user from "../../../../../../models/users.js";
 
 export async function GET(request, { params }) {
-  const username = params.usuario;
+  const resolvedParams = await params;
+  const username = resolvedParams.usuario;
+
   try {
-    const userFound = await user.findOneByUsername(username);
+    const userFound = await user.findOneByEmail(username);
 
     return Response.json(userFound, { status: 200 });
   } catch (error) {

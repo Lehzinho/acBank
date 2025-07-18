@@ -34,6 +34,7 @@ export async function POST(request) {
         message: "Dados de autenticação não conferem.",
         action: "Verifique se os dados enviados estão corretos",
       });
+
       return Response.json(unauthorizedError.toJSON(), {
         status: unauthorizedError.statusCode,
       });
@@ -47,6 +48,7 @@ export async function GET(request) {
   try {
     // Extrai o cookie da requisição
     const cookieHeader = request.headers.get("cookie");
+
     if (!cookieHeader) {
       throw new UnauthorizedError({
         message: "Sessão não encontrada.",
@@ -81,6 +83,7 @@ export async function GET(request) {
         valid: true,
         user_id: sessionData.user_id,
         expires_at: sessionData.expires_at,
+        email: sessionData.email,
       },
       {
         status: 200,
