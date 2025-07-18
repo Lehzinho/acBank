@@ -19,8 +19,11 @@ export const TransactionMenu = () => {
   async function handleDeposit() {
     setLoading(true);
     const deposito = valor.replace(/[^\d]/g, "");
-    if (deposito === "0") return;
     try {
+      if (deposito === "0") {
+        setLoading(false);
+        throw new Error("Digite o valor a ser mandado");
+      }
       const data = await createTransaction(
         user?.email as string,
         destinatario,
@@ -42,7 +45,7 @@ export const TransactionMenu = () => {
 
       toast(`${tipoTransacao.toLocaleUpperCase()} efetuado com susseço.`);
     } catch (error: any) {
-      toast("Destinatario nao encontrado.");
+      toast(error.message);
     } finally {
       setValor("0");
       setLoading(false);
@@ -54,8 +57,16 @@ export const TransactionMenu = () => {
   return (
     <section className={styles.Container}>
       <div>
-        <button onClick={() => setTipoTransacao("DEPOSITO")}>Depósito</button>
-        <button onClick={() => setTipoTransacao("TRANSFERENCIA")}>
+        <button
+          onClick={() => setTipoTransacao("DEPOSITO")}
+          className={tipoTransacao === "DEPOSITO" ? styles.Active : ""}
+        >
+          Depósito
+        </button>
+        <button
+          onClick={() => setTipoTransacao("TRANSFERENCIA")}
+          className={tipoTransacao === "TRANSFERENCIA" ? styles.Active : ""}
+        >
           Transferência
         </button>
       </div>

@@ -60,6 +60,9 @@ export const TableRole = (trans: TransacaoProps) => {
           {trans.tipo.toLowerCase()}
         </p>
       </td>
+      <td>
+        <p>{trans.descricao}</p>
+      </td>
       <td
         style={{ textAlign: "right" }}
         className={debitoCredito === "Crédito" ? styles.Credito : styles.Debito}

@@ -1,4 +1,5 @@
 .Container {
+  position: relative;
   width: 100%;
   max-width: 280px;
   display: flex;
@@ -16,4 +17,13 @@
 .Container > label {
   font: var(--fontnormal);
   color: var(--mainBackColor);
+}
+
+.Container > p {
+  position: absolute;
+  bottom: 0;
+  color: var(--mainRedColor);
+  font-size: 12px;
+
+  transform: translateY(100%);
 }

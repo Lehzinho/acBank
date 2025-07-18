@@ -62,3 +62,7 @@
 
   cursor: pointer;
 }
+
+.Active {
+  background-color: var(--secondaryBlueColor) !important;
+}

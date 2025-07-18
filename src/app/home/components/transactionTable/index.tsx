@@ -27,8 +27,9 @@ export const TransactionTable = () => {
       <thead>
         <tr>
           <th style={{ textAlign: "left" }}>Data</th>
-          <th>Descrição</th>
+          <th>D/C</th>
           <th>Tipo</th>
+          <th>Descricao</th>
           <th>Valor</th>
           <th>#</th>
         </tr>
