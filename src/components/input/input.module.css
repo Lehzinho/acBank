@@ -1,5 +1,19 @@
 .Container {
-  max-width: 250px;
+  width: 100%;
+  max-width: 280px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.Container > input {
+  height: 40px;
+  border-radius: 8px;
+  padding: 0 8px;
+  font: var(--fontnormal);
+}
+
+.Container > label {
+  font: var(--fontnormal);
+  color: var(--mainRedColor);
 }

@@ -1,6 +1,16 @@
-import { requireAuth } from "@/utils/auth";
+import { Container } from "@/components/container";
+import { Header } from "./components/header";
+import { TransactionMenu } from "./components/transactionMenu";
+import { TransactionTable } from "./components/transactionTable";
 
 export default async function Home() {
-  await requireAuth("/signin");
-  return <div>Home</div>;
+  return (
+    <>
+      <Header />
+      <Container>
+        <TransactionMenu />
+        <TransactionTable />
+      </Container>
+    </>
+  );
 }

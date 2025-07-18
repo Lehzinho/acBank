@@ -1,37 +1,129 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ACBank
 
-## Getting Started
+Projeto desenvolvido como parte do processo seletivo do Grupo Adriano Cobuccio para a vaga de Front-end. A aplicação simula uma carteira digital com funcionalidades de cadastro, autenticação, operações financeiras e controle de sessões de usuário.
 
-First, run the development server:
+---
+
+## Stack utilizada
+
+- **Next.js** (App Router + API Routes)
+- **TypeScript**
+- **PostgreSQL** (via Docker)
+- **React Hook Form** + **Zod** (validação)
+- **Jest** (testes de integração)
+- **Docker + Compose**
+- **Node PG Migrate** (migrações do banco)
+- **UUID**, **bcryptjs**, **axios**, entre outras
+
+---
+
+## Funcionalidades
+
+### Cadastro e Autenticação
+
+- Criação de usuários com `nome`, `email` e `senha`
+- Login com e-mail e senha, gerando sessão via `session_id` (cookie HttpOnly)
+- Verificação de sessão autenticada
+
+### Operações Financeiras
+
+- **Depósito**: adiciona saldo à conta do usuário autenticado
+- **Transferência**: envia saldo de um usuário para outro (valida saldo suficiente)
+- **Reversão**: possibilidade de reverter operações em caso de inconsistência (em implementação)
+
+### Histórico de Operações
+
+- Consulta das operações realizadas por cada usuário (requer autenticação)
+
+---
+
+## Testes Automatizados
+
+O projeto inclui **testes de integração completos**, cobrindo:
+
+- `POST /users`: criação de usuários (inclui validações de unicidade e senha)
+- `POST /sessions`: autenticação e gerenciamento de sessão
+- `GET /sessions`: verificação de sessão
+- `POST /operacoes`: depósito e transferência (com e sem autenticação)
+- `GET /operacoes/:userId`: histórico de operações do usuário
+- `GET /status`: healthcheck completo da aplicação e banco
+- `GET/POST /migrations`: execução e verificação de migrações pendentes
+
+Para rodar os testes:
+
+```bash
+npm run test:watch
+```
+
+---
+
+## Como rodar o projeto
+
+### 1. Instalar dependências
+
+```bash
+npm install
+```
+
+### 2. Subir infraestrutura com Docker
+
+```bash
+npm run services:up
+```
+
+> Isso iniciará o banco de dados PostgreSQL com as configurações do arquivo `infra/compose.yaml`.
+
+### 3. Esperar banco e rodar migrações
+
+```bash
+npm run services:wait:database
+npm run migrations:up
+```
+
+### 4. Iniciar aplicação em modo desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando                     | Descrição                              |
+| --------------------------- | -------------------------------------- |
+| `npm run dev`               | Inicia app local + serviços via Docker |
+| `npm run build`             | Gera build de produção                 |
+| `npm run start`             | Inicia build gerado                    |
+| `npm run lint`              | Lint com Next                          |
+| `npm run migrations:create` | Cria nova migração                     |
+| `npm run migrations:up`     | Executa migrações pendentes            |
+| `npm run test:watch`        | Roda testes com Jest em modo watch     |
+| `npm run services:up`       | Sobe serviços (banco) via Docker       |
+| `npm run services:down`     | Para e remove containers               |
+| `npm run commit`            | Commit com commitizen padronizado      |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Avaliação técnica
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Este projeto foi construído com foco nos seguintes critérios:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Uso de código limpo e boas práticas (SOLID, modularização)
+- Arquitetura baseada em **MVC** (Model-View-Controller)
+- Validação de dados e mensagens de erro estruturadas
+- Testes de integração robustos
+- Segurança básica com autenticação via cookie HttpOnly
+- Uso de Docker para simulação do ambiente de produção
+- Arquitetura escalável com separação entre API e lógica de domínio
 
-## Deploy on Vercel
+## Autor
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Alexandre Toulios**
+🔗 [Link do Github](https://github.com/Lehzinho/acBank)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# acBank
+---
+
+## Observações
+
+- O projeto está em fase inicial (v0.1.0), novas features como **reversão de operações** e **relatórios financeiros** estão em planejamento.

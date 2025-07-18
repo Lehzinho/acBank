@@ -1,0 +1,24 @@
+.Table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.Table th {
+  padding: 0 12px;
+  height: 28px;
+}
+
+.Table th {
+  border: none;
+  background-color: var(--mainBlueColor);
+  color: var(--secondFontColor);
+}
+
+.Table > thead > tr > th:first-child {
+  border-radius: 8px 0 0 0;
+}
+
+.Table > thead > tr > th:last-child {
+  border-radius: 0 8px 0 0;
+}

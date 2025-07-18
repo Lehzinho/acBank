@@ -1,13 +1,30 @@
-import { getAuthStatus, requireAuth } from "@/utils/auth";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+"use client";
+import { Container } from "@/components/container";
+import { AuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
 
-export default async function Home() {
-  const { isAuthenticated } = await getAuthStatus();
+export default function Home() {
+  const { user, loading } = useContext(AuthContext);
+  const router = useRouter();
 
-  if (isAuthenticated) {
-    redirect("/home");
-  } else {
-    redirect("/signin");
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.push("/home");
+      } else {
+        router.push("/signin");
+      }
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <Container>
+        <p>Loading...</p>
+      </Container>
+    );
   }
+
+  return null;
 }

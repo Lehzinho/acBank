@@ -1,11 +1,9 @@
-import { requireGuest } from "@/utils/auth";
 import { SignInForm } from "./components/form";
+import styles from "./signin.module.css";
 
 export default async function Signin() {
-  await requireGuest();
-
   return (
-    <section>
+    <section className={styles.Container}>
       <SignInForm />
     </section>
   );
