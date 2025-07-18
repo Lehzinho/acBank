@@ -16,7 +16,7 @@ beforeAll(async () => {
  * Suite de testes para o endpoint GET /api/v1/operacoes/{userId}
  * Testa cenários de autenticação e autorização
  */
-describe("GET /api/v1/sessions/operacoes", () => {
+describe("GET /api/v1/sessions/operacoes/usuario", () => {
   describe("Authenticated user", () => {
     /**
      * Testa se o endpoint rejeita requisições sem token de autenticação
