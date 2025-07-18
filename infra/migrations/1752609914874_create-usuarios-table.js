@@ -23,8 +23,8 @@ exports.up = (pgm) => {
     },
 
     saldo: {
-      type: "decimal(15,2)",
-      default: 0.0,
+      type: "integer",
+      default: 0,
       notNull: true,
     },
 

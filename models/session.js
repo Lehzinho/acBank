@@ -34,20 +34,22 @@ async function verify(token) {
 
   const results = await database.query({
     text: `
-      SELECT 
-        id, 
-        token, 
-        user_id, 
-        expires_at, 
-        created_at, 
-        updated_at
-      FROM 
-        sessions 
-      WHERE 
-        token = $1 
-        AND expires_at > timezone('utc', now())
-      LIMIT 1
-    ;`,
+          SELECT 
+            s.id, 
+            s.token, 
+            s.user_id, 
+            s.expires_at, 
+            s.created_at, 
+            s.updated_at,
+            u.email
+          FROM 
+              sessions s
+              LEFT JOIN usuarios u ON s.user_id = u.id
+          WHERE 
+              s.token = $1 
+              AND s.expires_at > timezone('utc', now())
+          LIMIT 1
+          ;`,
     values: [token],
   });
 

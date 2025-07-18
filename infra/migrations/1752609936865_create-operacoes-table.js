@@ -24,7 +24,7 @@ exports.up = (pgm) => {
     },
 
     valor: {
-      type: "decimal(15,2)",
+      type: "integer",
       notNull: true,
     },
 
