@@ -1,12 +1,11 @@
 "use client";
 import { AuthContext } from "@/context/AuthContext";
 import { TransacaoProps } from "@/interfaces/transacao.type";
-import { api } from "@/config/api";
-import { formatarReal } from "@/utils/formataReal";
 import { useContext, useEffect, useState } from "react";
-import styles from "./transactionTable.module.css";
 import { TableRole } from "./components/tablerole";
 import { getTransactions } from "@/services/operacoesServices";
+
+import styles from "./transactionTable.module.css";
 
 export const TransactionTable = () => {
   const { user } = useContext(AuthContext);
@@ -16,7 +15,9 @@ export const TransactionTable = () => {
     async function getOrders() {
       if (user && user.id) {
         const data = await getTransactions(user?.id as string);
-        setTransacoes(data);
+        if (data) {
+          setTransacoes(data);
+        }
       }
     }
     getOrders();
@@ -27,6 +28,7 @@ export const TransactionTable = () => {
         <tr>
           <th style={{ textAlign: "left" }}>Data</th>
           <th>Descrição</th>
+          <th>Tipo</th>
           <th>Valor</th>
           <th>#</th>
         </tr>

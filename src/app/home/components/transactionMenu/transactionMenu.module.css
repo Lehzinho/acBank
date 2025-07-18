@@ -53,6 +53,8 @@
   all: unset;
   margin: 0 auto;
   height: 40px;
+  width: 100px;
+  text-align: center;
   color: var(--secondFontColor);
   background-color: var(--mainBlueColor);
   padding: 0 16px;

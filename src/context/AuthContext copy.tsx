@@ -30,7 +30,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // ESTADO DO COMPONENTE
   const [user, setUser] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sessionChecked, setSessionChecked] = useState(false);
 
   // HOOKS DO NEXT.JS
   const router = useRouter();
@@ -45,28 +44,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkSession();
   }, []);
 
-  // Controla o redirecionamento baseado na autenticação
-  useEffect(() => {
-    // Só executa redirecionamento depois que a sessão foi verificada
-    if (sessionChecked && !loading) {
-      const isPublicRoute = publicRoutes.includes(pathname);
-
-      if (!user && !isPublicRoute) {
-        // Se não há usuário e não está em rota pública, redireciona para signin
-        router.push("/signin");
-      } else if (user && isPublicRoute) {
-        // Se há usuário e está em rota pública, redireciona para home
-        router.push("/home");
-      }
-    }
-  }, [user, loading, pathname, router, sessionChecked]);
-
   function updateUserAccountValue(value: number) {
     setUser((prev) => {
       if (!prev) return null;
       return { ...prev, saldo: value };
     });
   }
+
+  // Controla o redirecionamento baseado na autenticação
+  useEffect(() => {
+    if (!loading) {
+      const isPublicRoute = publicRoutes.includes(pathname);
+
+      if (!user && !isPublicRoute) {
+        // Se não há usuário e não está em rota pública, redireciona para signin
+        router.push("/signin");
+      } else if (user && isPublicRoute) {
+        // Se há usuário e está em rota pública, redireciona para home ou dashboard
+        router.push("/home");
+      }
+    }
+  }, [user, loading, pathname, router]);
 
   // FUNÇÕES
   /**
@@ -78,12 +76,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await getNewSession();
       if (data.valid) {
         await fetchUserData(data.email);
+        if (user) {
+          router.push("/home");
+        } else {
+          router.push("/signin");
+        }
       }
     } catch (error: any) {
       console.log(error.response?.data?.message || "Erro ao verificar sessão");
     } finally {
       setLoading(false);
-      setSessionChecked(true);
     }
   };
 
@@ -111,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await createNewSession(email, password);
       await fetchUserData(email);
-      router.push("/home");
+      router.push("/home"); // Redireciona para home após login
     } catch (error: any) {
       toast.error("Erro ao fazer login verifique suas credenciais");
     }
@@ -137,33 +139,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /**
    * Realiza o logout do usuário
    */
-  const logout = async () => {
-    try {
-      // Limpa o cookie de sessão
-      await fetch("/api/v1/logout", {
-        method: "POST",
-      });
-
-      // Limpa o estado do usuário
-      setUser(null);
-
-      // Importante: manter sessionChecked como true após logout
-      // para evitar loop infinito de loading
-      setSessionChecked(true);
-      setLoading(false);
-
-      // Redireciona para signin
-      router.push("/signin");
-
-      toast("Logout realizado com sucesso!");
-    } catch (error: any) {
-      console.error("Erro ao fazer logout:", error);
-      toast.error("Erro ao fazer logout");
-    }
+  const logout = () => {
+    router.push("/signin");
+    setUser(null);
+    toast("Logout realizado com sucesso!");
   };
 
   // Renderiza loading enquanto verifica a sessão
-  if (loading || !sessionChecked) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>

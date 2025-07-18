@@ -55,7 +55,6 @@ export const SignInForm = () => {
    */
   async function handleLogin({ email, password }: FormData) {
     await login(email, password);
-    router.push("/home");
   }
 
   // Não renderizar até que o cliente esteja pronto (evita hidration mismatch)

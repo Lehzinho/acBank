@@ -14,8 +14,10 @@ export const TransactionMenu = () => {
   const [valor, setValor] = useState("0");
   const [destinatario, setDestinatario] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleDeposit() {
+    setLoading(true);
     const deposito = valor.replace(/[^\d]/g, "");
     if (deposito === "0") return;
     try {
@@ -28,6 +30,10 @@ export const TransactionMenu = () => {
         user?.id as string
       );
 
+      if (!data) {
+        throw new Error("Destinatario nao encontrado.");
+      }
+
       updateUserAccountValue(
         tipoTransacao === "TRANSFERENCIA"
           ? data.senderBalance
@@ -36,12 +42,12 @@ export const TransactionMenu = () => {
 
       toast(`${tipoTransacao.toLocaleUpperCase()} efetuado com susseço.`);
     } catch (error: any) {
-      if (error.response.data.name === "UnauthorizedError") {
-        toast("Destinatario nao encontrado.");
-      }
+      toast("Destinatario nao encontrado.");
     } finally {
       setValor("0");
+      setLoading(false);
       setDestinatario("");
+      setDescricao("");
     }
   }
 
@@ -91,7 +97,9 @@ export const TransactionMenu = () => {
           </label>
         </>
       )}
-      <button onClick={handleDeposit}>Enviar</button>
+      <button onClick={handleDeposit} disabled={loading}>
+        {loading ? "Processando..." : "Enviar"}
+      </button>
     </section>
   );
 };

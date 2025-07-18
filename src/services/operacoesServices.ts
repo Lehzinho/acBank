@@ -7,6 +7,22 @@ export async function getTransactions(userId: string) {
     return data;
   } catch (error) {}
 }
+
+export async function patchTransaction(
+  userId: string,
+  transactionId: string,
+  descricao: string
+) {
+  try {
+    const { data } = await api.patch(
+      `/api/v1/operacoes/${userId}/${transactionId}`,
+      { descricao }
+    );
+
+    return data;
+  } catch (error) {}
+}
+
 export async function createTransaction(
   userEmail: string,
   destinatario: string,

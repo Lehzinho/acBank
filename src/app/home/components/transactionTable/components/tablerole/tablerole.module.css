@@ -16,37 +16,6 @@
   color: var(--mainBlueColor);
 }
 
-.Modal {
-  position: relative;
-
-  width: 400px;
-  height: 400px;
-  background-color: var(--mainWhiteColor);
-  border-radius: 8px;
-  padding: 8px;
-}
-
-.Modal > button:first-child {
-  position: absolute;
-  height: 30px;
-  width: 30px;
-  border-radius: 999px;
-  transform: translate(50%, -50%);
-  background-color: var(--mainBlackColor);
-  color: var(--secondFontColor);
-  font-weight: bold;
-  top: 0;
-  right: 0;
-}
-
-.Modal li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 30px;
-  border-bottom: 1px dotted rgba(0, 0, 0, 0.3);
-}
-
 .Credito {
   color: var(--mainGreenColor);
 }
