@@ -2,8 +2,9 @@ import { faker } from "@faker-js/faker/.";
 import retry from "async-retry";
 import database from "infra/database.js";
 import migrator from "models/migrator.js";
-import password from "models/password";
 import user from "models/users.js";
+import session from "models/session.js";
+import operacao from "models/operacoes.js";
 
 async function waitForAllServices() {
   await waitForWebServices();
@@ -40,10 +41,34 @@ async function createUser(userObject) {
   });
 }
 
+async function createOperation({
+  usuario_origem_email,
+  usuario_destino_email,
+  tipo,
+  valor,
+  descricao,
+  user_id,
+}) {
+  return await operacao.create({
+    usuario_origem_email,
+    usuario_destino_email,
+    tipo,
+    valor,
+    descricao,
+    user_id,
+  });
+}
+
+async function createToken(userId) {
+  return await session.create(userId);
+}
+
 const orchestrator = {
   runPendingMigrations,
   waitForAllServices,
   clearDatabase,
+  createOperation,
+  createToken,
   createUser,
 };
 
