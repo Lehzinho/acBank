@@ -128,6 +128,7 @@ describe("GET /api/v1/sessions/verify", () => {
       const verifyResponseBody = await verifyResponse.json();
 
       expect(verifyResponseBody).toEqual({
+        email: "valid@example.com",
         valid: true,
         user_id: user.id,
         expires_at: verifyResponseBody.expires_at,

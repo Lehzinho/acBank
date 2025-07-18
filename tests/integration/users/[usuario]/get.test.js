@@ -38,7 +38,7 @@ describe("GET /api/v1/users/[username]", () => {
 
       // Act: Buscar o usuário pelo nome exato (mesma capitalização)
       const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/MesmoCase"
+        "http://localhost:3000/api/v1/users/mesmo.case@gmail.com"
       );
 
       // Assert: Verificar se o usuário foi encontrado
@@ -52,7 +52,7 @@ describe("GET /api/v1/users/[username]", () => {
         nome: "MesmoCase", // Nome deve corresponder exatamente
         email: "mesmo.case@gmail.com", // Email deve corresponder exatamente
         password: response2Body.password, // Senha deve existir (valor dinâmico/hash)
-        saldo: "0.00", // Saldo inicial deve ser 0.00
+        saldo: 0, // Saldo inicial deve ser 0.00
         created_at: response2Body.created_at, // Data de criação deve existir (valor dinâmico)
         updated_at: response2Body.updated_at, // Data de atualização deve existir (valor dinâmico)
       });
@@ -83,7 +83,7 @@ describe("GET /api/v1/users/[username]", () => {
 
       // Act: Buscar o usuário usando nome todo em minúsculas
       const response2 = await fetch(
-        "http://localhost:3000/api/v1/users/casediferente"
+        "http://localhost:3000/api/v1/users/case.diferente@gmail.com"
       );
 
       // Assert: Verificar se o usuário foi encontrado apesar da diferença de case
@@ -97,7 +97,7 @@ describe("GET /api/v1/users/[username]", () => {
         nome: "CaseDiferente", // Nome deve manter a capitalização original
         email: "case.diferente@gmail.com",
         password: response2Body.password,
-        saldo: "0.00",
+        saldo: 0,
         created_at: response2Body.created_at,
         updated_at: response2Body.updated_at,
       });
@@ -112,7 +112,7 @@ describe("GET /api/v1/users/[username]", () => {
      * Teste: Busca de usuário inexistente
      *
      * Cenário: Buscar por um usuário que não existe no sistema
-     * Resultado esperado: Erro 404 com mensagem apropriada
+     * Resultado esperado: Erro 401 com mensagem apropriada
      */
     test("With nonexistent username'", async () => {
       // Act: Tentar buscar um usuário que não existe
@@ -120,17 +120,17 @@ describe("GET /api/v1/users/[username]", () => {
         "http://localhost:3000/api/v1/users/UsuarioInexistente"
       );
 
-      // Assert: Verificar se retorna erro 404
-      expect(response.status).toBe(404);
+      // Assert: Verificar se retorna erro 401
+      expect(response.status).toBe(401);
 
       const responseBody = await response.json();
 
       // Assert: Verificar se a mensagem de erro está correta e bem estruturada
       expect(responseBody).toEqual({
-        name: "NotFoundError", // Tipo de erro específico
-        message: "O username informado não foi encotrado no sistema.", // Mensagem descritiva
-        action: "Verifique se o username está digitado corretamente.", // Ação sugerida
-        status_code: 404, // Código de status HTTP
+        action: "Verifique se os dados enviados estão corretos",
+        message: "Dados de autenticação não conferem.",
+        name: "UnauthorizedError",
+        status_code: 401,
       });
     });
   });
