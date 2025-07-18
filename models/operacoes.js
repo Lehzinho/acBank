@@ -70,12 +70,6 @@ async function reimbursement(id, novoTipo, descricao) {
 
   const operacao_original = response.rows[0];
 
-  // usuario_origem_email,
-  // usuario_destino_email,
-  // tipo,
-  // valor,
-  // descricao,
-  // operacao_original_id = null,
   const usuarioOrigem = await user.findOneById(
     operacao_original.usuario_origem_id
   );
