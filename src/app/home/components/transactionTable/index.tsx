@@ -22,6 +22,7 @@ export const TransactionTable = () => {
     }
     getOrders();
   }, [user]);
+
   return (
     <table className={styles.Table}>
       <thead>

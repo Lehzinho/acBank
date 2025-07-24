@@ -1,7 +1,7 @@
 import authentication from "../../../../../models/authentication.js";
 import session from "../../../../../models/session.js";
-import * as cookie from "cookie";
 import { UnauthorizedError } from "../../../../../infra/errors";
+import * as cookie from "cookie";
 
 export async function POST(request) {
   const userInputValues = await request.json();

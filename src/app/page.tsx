@@ -1,8 +1,13 @@
-import { Container } from "@/components/container";
-import { AuthContext } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { getSession } from "@/services/sessionServices";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return null;
+export default async function Home() {
+  const cookieStore = (await cookies()).toString();
+  const data = await getSession(cookieStore);
+  if (data.valid) {
+    redirect("/home");
+  } else {
+    redirect("/signin");
+  }
 }

@@ -9,7 +9,7 @@ import cookie from "cookie";
 // Imports - Dependências internas
 import { UserProps } from "@/interfaces/user.type";
 import { createNewUser, getUser } from "@/services/userServices";
-import { createNewSession, getNewSession } from "@/services/sessionServices";
+import { createNewSession, getSession } from "@/services/sessionServices";
 
 // INTERFACES E TIPOS
 interface userProviderProps {
@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    */
   const checkSession = async () => {
     try {
-      const data = await getNewSession();
+      const data = await getSession();
       if (data.valid) {
         await fetchUserData(data.email);
         if (user) {

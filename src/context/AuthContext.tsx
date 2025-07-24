@@ -2,14 +2,13 @@
 
 // Imports - Dependências externas
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import cookie from "cookie";
 
 // Imports - Dependências internas
 import { UserProps } from "@/interfaces/user.type";
 import { createNewUser, getUser } from "@/services/userServices";
-import { createNewSession, getNewSession } from "@/services/sessionServices";
+import { createNewSession, getSession } from "@/services/sessionServices";
 
 // INTERFACES E TIPOS
 interface userProviderProps {
@@ -34,32 +33,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // HOOKS DO NEXT.JS
   const router = useRouter();
-  const pathname = usePathname();
-
-  // ROTAS PÚBLICAS (acessíveis sem autenticação)
-  const publicRoutes = ["/signin", "/signup"];
 
   // EFEITOS
   // Verifica a sessão automaticamente quando o componente é montado
   useEffect(() => {
     checkSession();
   }, []);
-
-  // Controla o redirecionamento baseado na autenticação
-  useEffect(() => {
-    // Só executa redirecionamento depois que a sessão foi verificada
-    if (sessionChecked && !loading) {
-      const isPublicRoute = publicRoutes.includes(pathname);
-
-      if (!user && !isPublicRoute) {
-        // Se não há usuário e não está em rota pública, redireciona para signin
-        router.push("/signin");
-      } else if (user && isPublicRoute) {
-        // Se há usuário e está em rota pública, redireciona para home
-        router.push("/home");
-      }
-    }
-  }, [user, loading, pathname, router, sessionChecked]);
 
   function updateUserAccountValue(value: number) {
     setUser((prev) => {
@@ -75,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    */
   const checkSession = async () => {
     try {
-      const data = await getNewSession();
+      const data = await getSession();
       if (data.valid) {
         await fetchUserData(data.email);
       }
@@ -88,6 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   /**
+   *
    * Busca os dados completos do usuário pelo email
    * @param email - Email do usuário
    */
@@ -165,8 +145,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Renderiza loading enquanto verifica a sessão
   if (loading || !sessionChecked) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div>
+        <div></div>
       </div>
     );
   }
